@@ -78,11 +78,11 @@ echo "host vulnbox
 scp ./setup_tulip.sh vulnbox:~/
 #run the setupfile on the remote host
 pidssh vulnbox -t "bash ~/setup_tulip.sh"
-#listen on the remote port for tulip and redirect on locahost on port 8080, run in background
+#listen on the remote port for tulip and redirect on locahost on port 4242, run in background
 ssh -L 4242:127.0.0.1:4242 vulnbox &
 tulip_PID = $!
 
 ##TODO: modify destructive farm config file
 echo "all set: 
 - you can connect to the vulnbox with the command \'ssh vulnbox\'
-- you can find the tulip service on http://localhost:8080/, you can stop listening by using command 'kill -9 $tulip_PID"
+- you can find the tulip service on http://localhost:4242/, you can stop listening by using command 'kill -9 $tulip_PID"
