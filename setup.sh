@@ -73,7 +73,7 @@ echo 'Generating ssh alias...'
 echo "host vulnbox
     Hostname $ipvulnbox
     User root
-    IdentityFile ~/.ssh/id_vulnbox" > ~/.ssh/config
+    IdentityFile ~/.ssh/id_vulnbox" >> ~/.ssh/config
 #copy the tulip setup file on the vulnbox
 scp ./setup_tulip.sh vulnbox:~/
 #run the setupfile on the remote host
