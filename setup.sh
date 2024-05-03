@@ -79,7 +79,7 @@ scp ./setup_tulip.sh vulnbox:~/
 #run the setupfile on the remote host
 pidssh vulnbox -t "bash ~/setup_tulip.sh"
 #listen on the remote port for tulip and redirect on locahost on port 8080, run in background
-ssh -L 1337:127.0.0.1:8080 vulnbox &
+ssh -L 4242:127.0.0.1:4242 vulnbox &
 tulip_PID = $!
 
 ##TODO: modify destructive farm config file
