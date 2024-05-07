@@ -1,2 +1,4 @@
 #ignore destructive farm
 DestructiveFarm/
+#ignore all test
+test*

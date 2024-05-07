@@ -2,7 +2,8 @@
 vpnfile=""
 ipvulnbox=""
 pswvulnbox=""
-vpnfile=""
+tick_length=""
+tick_start=""
 function show_help {
     echo "usage:  $BASH_SOURCE [OPTIONS]..."
     echo "Set up the enviroment for an A/D type CTF,"
@@ -42,15 +43,29 @@ if test -z $ipvulnbox;
 then
     read -p 'ip of the vuln box= ' ipvulnbox
 fi
+#check if the ip is valid
+while [[ ! $ipvulnbox =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]
+do
+    echo "Invalid ip address..."
+    read -p 'ip of the vuln box= ' ipvulnbox
+done
+#check if the password is set
 if test -z $pswvulnbox;
 then
     read -p 'password of the vuln box= ' pswvulnbox
 fi
-
-if test ! -z $vpnfile; #test vpn file path non zero
+#check if the vpn file is set and exists
+if test ! -z $vpnfile; 
 then
-    $(sudo wg-quick up $1 &>/dev/null ) 
+    if test ! -f $vpnfile;
+    then
+        echo "The file $vpnfile does not exist..." >&2
+        exit 1
+    fi
+    $(sudo wg-quick up $vpnfile &>/dev/null ) 
     if [ $? != 0 ] ; then echo 'Something went wrong with wireguard...'>&2 ; exit 1 ; fi
+else
+    echo "No vpn file specified, skipping vpn setup..."
 fi
 #try to see if destructive farm is already there, if not clone the repo
 test -d ./DestructiveFarm 
@@ -73,10 +88,16 @@ sshpass -p $pswvulnbox | ssh-copy-id -i ~/.ssh/id_vulnbox.pub root@$ipvulnbox &>
 if [ $? != 0 ] ; then echo 'Something went wrong...'>&2 ; exit 1 ; fi
 #create config file in .ssh for semplicity
 echo 'Generating ssh alias...'
-echo "host vulnbox
+#if we already use the alias vulnbox, we just update the ip
+if cat ~/.ssh/config | grep -q "host vulnbox"
+then
+    sed -i "/host vulnbox/{n;s/.*/    Hostname $ipvulnbox/}" ~/.ssh/config
+else
+    echo "host vulnbox
     Hostname $ipvulnbox
     User root
     IdentityFile ~/.ssh/id_vulnbox" >> ~/.ssh/config
+fi
 #disable password auth on the vulnbox
 ssh vulnbox -t "sed -i -E 's/#?PasswordAuthentication (yes|no)/PasswordAuthentication no/' /etc/ssh/sshd_config" &>/dev/null
 #restart ssh service
