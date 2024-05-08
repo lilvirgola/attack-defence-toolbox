@@ -1,48 +1,3 @@
-#!/bin/bash
-echo Cloning repo...
-git clone https://github.com/OpenAttackDefenseTools/tulip.git
-
-echo Setting up config...
-cat <<EOF > tulip/.env
-FLAG_REGEX="[A-Z0-9]{31}="
-TULIP_MONGO="mongo:27017"
-TRAFFIC_DIR_HOST="./services/test_pcap"
-TRAFFIC_DIR_DOCKER="/traffic"
-TICK_START="2024-04-20T08:00+02:00"
-TICK_LENGTH=120000
-EOF
-
-# setup config
-cat <<EOF > tulip/services/api/configurations.py
-#!/usr/bin/env python
-import os
-from pathlib import Path
-
-traffic_dir = Path(os.getenv("TULIP_TRAFFIC_DIR", "/traffic"))
-tick_length = os.getenv("TICK_LENGTH", 2*60*1000)
-start_date = os.getenv("TICK_START", "2018-06-27T13:00+02:00")
-mongo_host = os.getenv("TULIP_MONGO", "localhost:27017")
-mongo_server = f'mongodb://{mongo_host}/'
-vm_ip = "10.60.64.1"
-services = [{"ip": vm_ip, "port": 1337, "name": "cc-market"},
-			{"ip": vm_ip, "port": 5000, "name": "polls"},
-			{"ip": vm_ip, "port": 8080, "name": "notes"},
-			{"ip": vm_ip, "port": 8000, "name": "crashair"}]
-EOF
-cp tulip/services/api/configurations.py tulip/services/configurations.py
-rm tulip/services/test_pcap/*
-
-# only allow localhost access
-sed -i 's/3000:3000/127.0.0.1:4242:3000/g' tulip/docker-compose.yml
-
-echo Starting up container...
-cd tulip
-docker compose up --build -d
-
-
-# setup monitoring script
-pip3 install scp scapy
-cat <<EOF > ./sniffer.py
 import argparse
 import os
 
@@ -141,7 +96,7 @@ if __name__ == "__main__":
 
 	while True:
 
-		# Inizia a fare lo sniffing per i pacchetti
+		# start packet sniffing
 		sniff(iface=args.interface, prn=packet_handler, filter=filter_bpf, timeout=args.timeout)
 		filename = f"log_{get_timestamp()}.pcap"
 		wrpcap(args.folderpath + filename, captured_packets)
@@ -181,7 +136,3 @@ if __name__ == "__main__":
 					file_to_delete = os.path.join(args.folderpath, files[i])
 					os.remove(file_to_delete)
 					print_log(f"Deleted file: {file_to_delete}")
-EOF
-
-echo Starting sniffer...
-python sniffer.py -p $PWD/tulip/services/test_pcap & disown

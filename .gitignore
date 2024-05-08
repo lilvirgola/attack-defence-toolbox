@@ -2,3 +2,5 @@
 DestructiveFarm/
 #ignore all test
 test*
+#ignore tulip setup file
+setup_tulip.sh
