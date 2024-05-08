@@ -15,8 +15,13 @@ $> bash setup.sh [-h|--help]
 
 ## How to run the script
 
-for running the script, open a terminal on the folder containing the `setup.sh` file and run the following command:
+for running the script, open a terminal on the folder containing the `setup.sh` file and run the following commands:
 
+this command install sshpass witch we use to copy the public key on the remote host without any interaction by the user:
+```shellscript
+$> sudo apt-get install sshpass
+```
+this one run the final script:
 ```shellscript
 $> bash setup.sh
 ```
