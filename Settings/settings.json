@@ -1,0 +1,37 @@
+{   
+    "script":{
+                "hostIp": "",
+
+                "ssh": {
+                        "defaultUsr":"root",
+                        "autoChangePwd": true,
+                        "rmPwd": true,
+                        "rsaKeysPath": "Settings/rsaKeys/"
+                        
+                        },
+                "vpn": {
+                        "confFilePath": ""
+                        
+                        },
+                "backup": {
+                           "localPath":"",
+                           "remotePath":""
+                          },
+                
+                "services": {
+                             "example":{
+                                        "path":"/root/example",
+                                        "port": 1234
+                                        }
+                            }
+                
+                
+        
+        },
+
+    "tulip": { 
+                "port":8080
+
+        },
+    "dFarm": {}
+}
