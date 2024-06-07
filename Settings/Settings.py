@@ -1,21 +1,17 @@
 import json
 
 class Settings:
+    script = None
+    tulip = None
+    dFarm = None
 
-    
-    
-    def __init__(self, settings_path) -> None:
-        
-        self._confFile = open(settings_path, "r")
-        self._conf = json.load(self._confFile)
+    default_settings_Path = "Settings\settings.json"
 
-    
-    
-    
+    @staticmethod
+    def load_settings():
 
-    
-
-
-
-
-    
+        with open(Settings.default_settings_Path, "r") as conf_file:
+            conf = json.load(conf_file)
+            Settings.script = conf["script"]
+            Settings.tulip = conf["tulip"]
+            Settings.dFarm = conf["dFarm"]
