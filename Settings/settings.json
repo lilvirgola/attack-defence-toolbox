@@ -3,7 +3,8 @@
                 "hostIp": "",
 
                 "ssh": {
-                        "defaultUsr":"root",
+                        "username":"root",
+                        "password":"root",
                         "autoChangePwd": true,
                         "rmPwd": true,
                         "rsaKeysPath": "Settings/rsaKeys/"
