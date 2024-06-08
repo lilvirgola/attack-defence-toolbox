@@ -8,6 +8,10 @@ class Setup():
     sshClient = paramiko.SSHClient() # ssh client
     sftpClient = None # sftp client
 
+    def __init__(self): # Constructor
+            
+        pass
+
     def execute_command(self, command): # Execute a command on the server via ssh
 
         stdin, stdout, stderr = self.sshClient.exec_command(command)
@@ -83,7 +87,7 @@ class Setup():
             
             print("Sftp Error:", str(e))
 
-    def main(self): # Main function
+    def main(self): # Main function of setup
 
         self.start_ssh() # start the ssh connection
 
@@ -91,6 +95,3 @@ class Setup():
 
         self.stop_ssh()
 
-    if __name__ == "__main__":
-
-        main()
