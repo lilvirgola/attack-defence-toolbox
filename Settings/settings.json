@@ -1,38 +1,46 @@
-{   
-    "script":{
-                "hostIp": "",
-
-                "ssh": {
-                        "username":"root",
-                        "password":"root",
-                        "autoChangePwd": true,
-                        "rmPwd": true,
-                        "rsaKeysPath": "Settings/rsaKeys/"
-                        
-                        },
-                "vpn": {
-                        "confFilePath": ""
-                        
-                        },
-                "backup": {
-                           "localPath":"",
-                           "remotePath":""
-                          },
-                
-                "services": {
-                             "example":{
-                                        "path":"/root/example",
-                                        "port": 1234
-                                        }
-                            }
-                
-                
-        
-        },
-
-    "tulip": { 
-                "port":8080
-
-        },
-    "dFarm": {}
+{
+  "services": {
+    "test": {
+      "path": "/home/virgola/cybercallenge/attack-defence-toolbox/test",
+      "containers": {
+        "web": {
+          "target_port": [
+            "8001"
+          ],
+          "listen_port": [
+            "8000"
+          ],
+          "http": [
+            false
+          ]
+        }
+      }
+    }
+  },
+  "info": {
+    "flag_regex": "[A-Z0-9]{31}=",
+    "tick_start": "2024-05-11T15:00+02:00",
+    "tick_length": 12000,
+    "vm_ip": "10.60.63.1"
+  },
+  "sniffer": {
+    "repo": "https://github.com/OpenAttackDefenseTools/tulip.git",
+    "dir_name": "tulip",
+    "port": 8080
+  },
+  "submitter": {
+    "repo": "https://github.com/DestructiveVoice/DestructiveFarm",
+    "dir_name": "DestructiveFarm",
+    "port": 8081
+  },
+  "ids": {
+    "repo": "",
+    "dir_name": "tulip",
+    "port": 8082
+  },
+  "proxy": {
+    "repo": "https://github.com/ByteLeMani/ctf_proxy.git",
+    "dir_name": "ctf_proxy",
+    "port": 8083
+  }
 }
