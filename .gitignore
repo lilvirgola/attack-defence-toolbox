@@ -1,6 +1,8 @@
 #ignore destructive farm
 DestructiveFarm/
 ctf_proxy/
+tulip/
+suricata/
 #ignore all test
 test*
 #ignore tulip setup file

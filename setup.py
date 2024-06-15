@@ -12,17 +12,17 @@ import ruamel.yaml  # pip install ruamel.yaml
 class WrongArgument(Exception):
         pass
 class Setup:
-    blacklist=None
-    yaml=None
+    blacklist=["remote_pcap_folder", "caronte", "tulip", "ctf_proxy","suricata"]
+    yaml=ruamel.yaml.YAML()
+    yaml.preserve_quotes = True
+    yaml.indent(sequence=3, offset=1)
     dirs: list[PosixPath] = []
     services_dict = {}
 
     def __init__(self):
         config.load_settings() # Load settings
-        blacklist = ["remote_pcap_folder", "caronte", "tulip", "ctf_proxy","suricata"] # Blacklist of services
-        yaml = ruamel.yaml.YAML()
-        yaml.preserve_quotes = True
-        yaml.indent(sequence=3, offset=1)
+        
+        
 
 
     def parse_dirs(self):
@@ -274,7 +274,7 @@ class Setup:
         os.system(f"docker compose -f ./{config.sniffer["dir_name"]}/*.y* up -d")
         os.system(f"pip3 install scp scapy")
         print(f"Starting sniffer...")
-        os.system(f"mv sniffer.py {config.sniffer['dir_name']}/")
+        os.system(f"cp sniffer.py {config.sniffer['dir_name']}/")
         os.system(f"python3 {config.sniffer['dir_name']}/sniffer.py & disown")
 
     def configure_submitter(self):
@@ -293,8 +293,12 @@ class Setup:
         self.make_backup()
         self.edit_services()
         self.configure_proxy()
-        
+        self.configure_sniffer()
+        #self.configure_submitter()
+        #self.configure_ids()
+            
         confirmation = input(
             "You are about to restart all your services! Make sure that no catastrophic configuration error has occurred.\nPress Enter to continue"
         )
         self.restart_services()
+
