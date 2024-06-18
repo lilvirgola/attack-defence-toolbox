@@ -35,7 +35,7 @@
   },
   "ids": {
     "repo": "",
-    "dir_name": "tulip",
+    "dir_name": "suricata",
     "port": 8082
   },
   "proxy": {
